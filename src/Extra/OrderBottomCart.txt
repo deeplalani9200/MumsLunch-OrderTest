@@ -1,0 +1,244 @@
+
+
+cartHeader: {
+    marginHorizontal: 16,
+    marginTop: 8,
+    backgroundColor: '#003778',
+    paddingVertical: 12,
+    borderTopStartRadius: 12,
+    borderTopEndRadius: 12,
+  },
+  cartItemContainer: {
+    marginHorizontal: 17,
+    paddingTop: 8,
+    paddingVertical: 12,
+    borderColor: '#003778',
+    borderWidth: 1,
+    marginBottom: 16,
+  },
+  quantityIcon: {
+    height: 32,
+    width: 32,
+    padding: 4,
+    backgroundColor: '#bac3ff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  quantityLabel: {
+    height: 32,
+    width: 32,
+    borderBottomColor: '#bac3ff',
+    borderTopColor: '#bac3ff',
+    borderTopWidth: 2,
+    borderBottomWidth: 2,
+  },
+  cartItemBox: {
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+  },
+  summaryHeader: {
+    marginHorizontal: 16,
+    marginTop: 8,
+    backgroundColor: '#d0d3db',
+    paddingVertical: 6,
+  },
+  orderTotalLabel: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: '#003778',
+    color: 'white',
+  },
+
+
+
+
+
+
+
+
+<View style={{...componentStyles.cartHeader}}>
+                  <Text
+                    style={{
+                      ...componentStyles.headline6,
+                      textAlign: 'center',
+                      color: 'white',
+                    }}>
+                    Cart
+                  </Text>
+                </View>
+
+
+
+
+
+
+
+<View style={{...componentStyles.cartItemContainer}}>
+                  {orderItemList.length !== 0 ? (
+                    <View>
+                      {orderItemList.map((item, index) => {
+                        const orderItem = item.item;
+                        return (
+                          <View
+                            key={index}
+                            style={{...componentStyles.cartItemBox}}>
+                            <View style={{flexDirection: 'row'}}>
+                              <Text style={{...componentStyles.title1}}>
+                                {orderItem.product_name}
+                              </Text>
+                              {orderItem.product_topping_items.length !== 0 && (
+                                <Text
+                                  style={{
+                                    ...componentStyles.body1,
+                                    color: textColor.darkcyan,
+                                  }}
+                                  onPress={() =>
+                                    openCustomizedToppingModal(item)
+                                  }>
+                                  {' '}
+                                  topping items
+                                </Text>
+                              )}
+                            </View>
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                paddingTop: 6,
+                                flex: 1,
+                              }}>
+                              <Text
+                                style={{...componentStyles.title1, flex: 2}}>
+                                ${orderItem.item_price}
+                              </Text>
+                              <View
+                                style={{
+                                  flexDirection: 'row',
+                                  flex: 3,
+                                  justifyContent: 'center',
+                                }}>
+                                <Pressable
+                                  onPress={() =>
+                                    updateOrderItemQuantity(
+                                      item,
+                                      QuantityStatus.Decrease,
+                                    )
+                                  }
+                                  style={{
+                                    ...componentStyles.quantityIcon,
+                                    borderTopStartRadius: 4,
+                                    borderBottomStartRadius: 4,
+                                  }}>
+                                  <Text style={{fontSize: 24, lineHeight: 24}}>
+                                    -
+                                  </Text>
+                                </Pressable>
+                                <View
+                                  style={{...componentStyles.quantityLabel}}>
+                                  <Text
+                                    style={{
+                                      ...componentStyles.title1,
+                                      textAlign: 'center',
+                                    }}>
+                                    {getItemQuantity(orderItem)}
+                                  </Text>
+                                </View>
+                                <Pressable
+                                  onPress={() =>
+                                    updateOrderItemQuantity(
+                                      item,
+                                      QuantityStatus.Increase,
+                                    )
+                                  }
+                                  style={{
+                                    ...componentStyles.quantityIcon,
+                                    borderTopEndRadius: 4,
+                                    borderBottomEndRadius: 4,
+                                  }}>
+                                  <Text style={{fontSize: 24, lineHeight: 24}}>
+                                    +
+                                  </Text>
+                                </Pressable>
+                              </View>
+                              <Text
+                                style={{
+                                  ...componentStyles.title1,
+                                  flex: 2,
+                                  textAlign: 'right',
+                                }}>
+                                $
+                                {financial(
+                                  orderItem.item_price * item.quantity,
+                                )}
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                paddingTop: 8,
+                                borderBottomColor: 'black',
+                                borderBottomWidth: 1,
+                              }}
+                            />
+                          </View>
+                        );
+                      })}
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignSelf: 'flex-end',
+                          paddingTop: 16,
+                        }}>
+                        <Text
+                          style={{
+                            ...componentStyles.title1,
+                            ...componentStyles.orderTotalLabel,
+                            marginRight: 16,
+                          }}>
+                          {getOrderTotalQuantity()}
+                        </Text>
+                        <Text
+                          style={{
+                            ...componentStyles.title1,
+                            ...componentStyles.orderTotalLabel,
+                            marginRight: 16,
+                          }}>
+                          ${getOrderTotalPrice()}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignSelf: 'flex-end',
+                          paddingTop: 16,
+                        }}>
+                        <Text
+                          onPress={() => removeAllItemFromCart()}
+                          style={{
+                            ...componentStyles.title1,
+                            ...componentStyles.orderTotalLabel,
+                            marginRight: 16,
+                          }}>
+                          Empty Cart
+                        </Text>
+                        <Text
+                          style={{
+                            ...componentStyles.title1,
+                            ...componentStyles.orderTotalLabel,
+                            marginRight: 16,
+                          }}>
+                          Checkout
+                        </Text>
+                      </View>
+                    </View>
+                  ) : (
+                    <Text
+                      style={{
+                        ...componentStyles.title1,
+                        textAlign: 'center',
+                        paddingHorizontal: 16,
+                        paddingVertical: 8,
+                      }}>
+                      There is no item added to the the cart.
+                    </Text>
+                  )}
+                </View>
